@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import lombok.Getter;
 
-import com.navercorp.scavenger.util.HashGenerator;
+import com.navercorp.scavenger.util.HashGenerator.DefaultHash;
 
 public class MethodRegistry {
     public static final String SYNTHETIC_SIGNATURE_HASH = "";
@@ -28,7 +28,7 @@ public class MethodRegistry {
                     signature = signature.replace('$', '.');
                     signature = signature.replace(",", ", ");
                 }
-                hash = HashGenerator.Md5.from(signature);
+                hash = DefaultHash.from(signature);
             }
             this.byteBuddySignatureToHash.put(byteBuddySignature, hash);
         }
