@@ -11,11 +11,19 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
-
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks.withType<JavaCompile>() {
+    // Compile all modules with target level 8 except for test
+    if (name != "test") {
+        val java8 = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = java8
+        targetCompatibility = java8
+    }
 }
 
 tasks.withType<ShadowJar> {
@@ -67,9 +75,11 @@ dependencies {
     implementation("io.grpc:grpc-okhttp:${property("grpcVersion")}")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation(platform("org.mockito:mockito-bom:5.13.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.22.0")
-    testImplementation("org.mockito:mockito-inline:4.3.1")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
 }
 
 testSets {
