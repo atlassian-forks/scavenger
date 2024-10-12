@@ -17,13 +17,10 @@ java {
     withSourcesJar()
 }
 
-tasks.withType<JavaCompile>() {
-    // Compile all modules with target level 8 except for test
-    if (name != "test") {
-        val java8 = JavaVersion.VERSION_1_8.toString()
-        sourceCompatibility = java8
-        targetCompatibility = java8
-    }
+tasks.withType<JavaCompile>().matching {
+    it.name in setOf("compileJava", "compileIntegrationTestJava")
+}.configureEach {
+    options.release = 8
 }
 
 tasks.withType<ShadowJar> {
